@@ -1,6 +1,7 @@
 package com.example.Mutants.service;
 
 import com.example.Mutants.dto.AdnSequenceRequest;
+import com.example.Mutants.dto.AdnStatsDTO;
 import com.example.Mutants.exceptions.InvalidDnaException;
 import com.example.Mutants.model.AdnEntity;
 import com.example.Mutants.model.AdnSequence;
@@ -52,6 +53,20 @@ public class AdnService {
                 throw new InvalidDnaException("Cada fila de la secuencia de ADN debe tener 6 caracteres.");
             }
         }
+    }
+
+    // Método para calcular las estadísticas
+    public AdnStatsDTO getAdnStats() {
+        long countMutantDna = adnRepository.countByIsMutant(true);
+        long countHumanDna = adnRepository.countByIsMutant(false);
+        double ratio = countHumanDna > 0 ? (double) countMutantDna / countHumanDna : 0.0;
+
+        AdnStatsDTO stats = new AdnStatsDTO();
+        stats.setCountMutantDna(countMutantDna);
+        stats.setCountHumanDna(countHumanDna);
+        stats.setRatio(ratio);
+
+        return stats;
     }
 }
 

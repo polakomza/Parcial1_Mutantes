@@ -2,6 +2,7 @@ package com.example.Mutants.controller;
 
 import com.example.Mutants.dto.AdnSequenceRequest;
 import com.example.Mutants.dto.AdnSequenceResponse;
+import com.example.Mutants.dto.AdnStatsDTO;
 import com.example.Mutants.service.AdnService;
 import com.example.Mutants.util.AdnGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,13 @@ public class AdnController {
             adnSequenceRequest.getDna()[i] = new String(dna[i]);
         }
         return ResponseEntity.ok(adnSequenceRequest);
+    }
+
+    // Endpoint para obtener las estadísticas
+    @GetMapping("/stats")
+    public ResponseEntity<AdnStatsDTO> getAdnStats() {
+        AdnStatsDTO stats = adnService.getAdnStats();
+        return ResponseEntity.ok(stats);
     }
 }
 
