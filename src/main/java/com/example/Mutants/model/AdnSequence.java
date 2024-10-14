@@ -7,7 +7,6 @@ import lombok.Data;
 public class AdnSequence {
     private String[] dna;
 
-    //Metodo para transformar el array de strings del adn valido en una matriz bidimensional de caracteres
     public char[][] toCharMatrix() {
         validateDna();
         char[][] charMatrix = new char[dna.length][];
@@ -16,7 +15,7 @@ public class AdnSequence {
         }
         return charMatrix;
     }
-    //Validaciones a la hora de ingresar un adn
+
     private void validateDna() {
         if (dna == null || dna.length != 6) {
             throw new InvalidDnaException("La secuencia de ADN debe ser una matriz de 6x6.");
@@ -26,9 +25,10 @@ public class AdnSequence {
                 throw new InvalidDnaException("Cada fila de la secuencia de ADN debe tener 6 caracteres.");
             }
             if (!row.matches("[ATCG]+")) {
-                throw new InvalidDnaException("La secuencia de ADN contiene caracteres inválidos.");
+                throw new InvalidDnaException("La secuencia de ADN contiene caracteres inválidos. Solo se permiten A, T, C, G.");
             }
         }
     }
 }
+
 

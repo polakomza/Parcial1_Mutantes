@@ -1,7 +1,6 @@
 package com.example.Mutants.exceptions;
 
 import com.example.Mutants.dto.ErrorResponseDTO;
-import com.example.Mutants.exceptions.InvalidDnaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,3 +21,4 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }
+

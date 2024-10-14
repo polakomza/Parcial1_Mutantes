@@ -1,10 +1,5 @@
 package com.example.Mutants.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Setter
-@Getter
 public class ErrorResponseDTO {
 
     private String message;
@@ -13,4 +8,13 @@ public class ErrorResponseDTO {
         this.message = message;
     }
 
+    // Getters y Setters
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
+
