@@ -1,10 +1,9 @@
 package com.example.Mutants.controller;
 
 import com.example.Mutants.dto.AdnSequenceRequest;
+import com.example.Mutants.dto.AdnStatsDTO;
 import com.example.Mutants.service.AdnService;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,7 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AdnController.class)
@@ -22,7 +23,7 @@ public class AdnControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean  // Cambiado de @Mock a @MockBean
+    @MockBean
     private AdnService adnService;
 
     @Test
@@ -40,5 +41,26 @@ public class AdnControllerTest {
                 .andExpect(status().isForbidden()); // Verifica que se recibe 403 Forbidden
     }
 
+    @Test
+    void testGetAdnStatsEndpoint() throws Exception {
+        // Crea un objeto de estadísticas de ADN con datos de ejemplo
+        AdnStatsDTO stats = new AdnStatsDTO();
+        stats.setCountMutantDna(40);
+        stats.setCountHumanDna(100);
+        stats.setRatio(0.4);
+
+        // Simula el comportamiento del servicio para que devuelva las estadísticas
+        when(adnService.getAdnStats()).thenReturn(stats);
+
+        // Realiza la petición GET al endpoint de estadísticas
+        mockMvc.perform(get("/adn/stats")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.countMutantDna").value(40))  // Asegúrate de usar camelCase
+                .andExpect(jsonPath("$.countHumanDna").value(100))  // Asegúrate de usar camelCase
+                .andExpect(jsonPath("$.ratio").value(0.4));
+    }
+
 }
+
 
