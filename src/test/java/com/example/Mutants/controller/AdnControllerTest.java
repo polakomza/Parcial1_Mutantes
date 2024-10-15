@@ -38,7 +38,8 @@ public class AdnControllerTest {
         mockMvc.perform(post("/adn/mutant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"dna\": [\"AATCGG\", \"CGTCAA\", \"TATGCT\", \"GTCAAA\", \"CGTCCA\", \"TGTGAA\"]}"))
-                .andExpect(status().isForbidden()); // Verifica que se recibe 403 Forbidden
+                .andExpect(status().isForbidden()) // Verifica que se recibe 403 Forbidden
+                .andExpect(jsonPath("$.message").value("No es mutante")); // Verifica que el mensaje es "No es mutante"
     }
 
     @Test

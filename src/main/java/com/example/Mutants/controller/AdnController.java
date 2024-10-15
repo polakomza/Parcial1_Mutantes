@@ -26,8 +26,9 @@ public class AdnController {
             response.setMessage("Es mutante");
             return ResponseEntity.ok(response);
         } else {
-            // Retorna 403 Forbidden si no es mutante
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            AdnSequenceResponse response = new AdnSequenceResponse();
+            response.setMessage("No es mutante");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response); // Incluye el mensaje "No es mutante" en el body
         }
     }
 
