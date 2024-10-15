@@ -26,18 +26,19 @@ public class AdnControllerTest {
     private AdnService adnService;
 
     @Test
-    void testIsMutantEndpoint() throws Exception {
+    void testIsMutantEndpoint_notMutant() throws Exception {
         AdnSequenceRequest request = new AdnSequenceRequest();
-        request.setDna(new String[]{"AAAAAA", "CCCCCC", "TTTTTT", "GGGGGG", "CCCCCC", "TTTTTT"});  // Mutante
+        request.setDna(new String[]{"AATCGG", "CGTCAA", "TATGCT", "GTCAAA", "CGTCCA", "TGTGAA"}); // No mutante
 
         // Simula el comportamiento del servicio
-        when(adnService.isMutant(any())).thenReturn(true);
+        when(adnService.isMutant(any())).thenReturn(false);
 
         // Realiza la petición POST al controlador
         mockMvc.perform(post("/adn/mutant")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"dna\": [\"AAAAAA\", \"CCCCCC\", \"TTTTTT\", \"GGGGGG\", \"CCCCCC\", \"TTTTTT\"]}"))
-                .andExpect(status().isOk());
+                        .content("{\"dna\": [\"AATCGG\", \"CGTCAA\", \"TATGCT\", \"GTCAAA\", \"CGTCCA\", \"TGTGAA\"]}"))
+                .andExpect(status().isForbidden()); // Verifica que se recibe 403 Forbidden
     }
+
 }
 

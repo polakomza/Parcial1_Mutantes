@@ -6,6 +6,7 @@ import com.example.Mutants.dto.AdnStatsDTO;
 import com.example.Mutants.service.AdnService;
 import com.example.Mutants.util.AdnGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,15 @@ public class AdnController {
     @PostMapping("/mutant")
     public ResponseEntity<AdnSequenceResponse> isMutant(@RequestBody AdnSequenceRequest adnSequenceRequest) {
         boolean isMutant = adnService.isMutant(adnSequenceRequest);
-        AdnSequenceResponse response = new AdnSequenceResponse();
-        response.setMessage(isMutant ? "Es mutante" : "No es mutante");
-        return ResponseEntity.ok(response);
+
+        if (isMutant) {
+            AdnSequenceResponse response = new AdnSequenceResponse();
+            response.setMessage("Es mutante");
+            return ResponseEntity.ok(response);
+        } else {
+            // Retorna 403 Forbidden si no es mutante
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @GetMapping("/generate")
